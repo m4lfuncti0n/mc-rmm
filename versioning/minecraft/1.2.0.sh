@@ -1,4 +1,4 @@
-# MSM version file for Minecraft 1.2.0 and above
+# mc-rmm version file for Minecraft 1.2.0 and above
 
 set_property LOG_PATH "server.log"
 
