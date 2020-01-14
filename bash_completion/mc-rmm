@@ -1,26 +1,25 @@
 
-# Minecraft Server Manager: Bash Completion script
+# Remote Monitoring and Managment Scripts: Bash Completion script
 # ================================================
 #
 # This script provides tab completion support for the
-# Minecraft Server Manager command.
+# Remote Monitoring and Managment Scripts command.
 #
-# https://github.com/msmhq/msm
 #
 
 
-# Source, if it exists, the msm profile.d script
-if [ -f "/etc/profile.d/msm.sh" ]; then
-	source "/etc/profile.d/msm.sh"
+# Source, if it exists, the mc-rmm profile.d script
+if [ -f "/etc/profile.d/mc-rmm.sh" ]; then
+	source "/etc/profile.d/mc-rmm.sh"
 fi
 
-MSM="${MSM_SCRIPT:-/etc/init.d/msm}"
+mc-rmm="${mc-rmm_SCRIPT:-/etc/init.d/mc-rmm}"
 
 
 ### Auto Completion Function
 
-_msm() {
-	source "$MSM"
+_mc-rmm() {
+	source "$mc-rmm"
 	
 	local base current options
 	COMPREPLY=()
@@ -252,4 +251,4 @@ _msm() {
 	return 0
 }
 
-complete -F _msm msm
+complete -F _mc-rmm mc-rmm
