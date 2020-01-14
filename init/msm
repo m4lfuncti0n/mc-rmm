@@ -1,24 +1,24 @@
 #!/bin/bash
 
-# Minecraft Server Manager
+# Minecraft Remote Monitoring and Managmen
 # ========================
 #
 # A single init script for managing multiple Minecraft servers.
 # Created by Marcus Whybrow
 #
-# https://github.com/msmhq/msm
+# https://github.com/mc-rmmhq/mc-rmm
 #
 
 ### BEGIN INIT INFO
-# Provides:	  msm
+# Provides:	  mc-rmm
 # Required-Start: $local_fs $remote_fs
 # Required-Stop:  $local_fs $remote_fs
 # Should-Start:	  $network
 # Should-Stop:	  $network
 # Default-Start:  2 3 4 5
 # Default-Stop:	  0 1 6
-# Short-Description: MSM: Minecraft init script
-# Description: Minecraft Server Manager, an init script for Minecraft/Bukkit servers
+# Short-Description: mc-rmm: Minecraft init script
+# Description: Minecraft Remote Monitoring and Managmen, an init script for Minecraft/Bukkit servers
 ### END INIT INFO
 
 
@@ -27,12 +27,12 @@
 # this script.
 
 
-# The Minecraft Server Manager version, use "msm version" to check yours.
+# The Minecraft Remote Monitoring and Managmen version, use "mc-rmm version" to check yours.
 VERSION="0.9.10"
 
-# Source, if it exists, the msm profile.d script
-if [ -f "/etc/profile.d/msm.sh" ]; then
-	source "/etc/profile.d/msm.sh"
+# Source, if it exists, the mc-rmm profile.d script
+if [ -f "/etc/profile.d/mc-rmm.sh" ]; then
+	source "/etc/profile.d/mc-rmm.sh"
 fi
 
 # $1: The file to follow links for
@@ -47,10 +47,10 @@ follow_links() {
 
 # Get real script file location
 follow_links "$0"; SCRIPT="$RETURN"
-# Get the MSM_CONF environment variable or use the default location
-CONF="${MSM_CONF:-/etc/msm.conf}"
-# Get the MSM_BASH_COMPLETION environment variable or use default location
-COMPLETION="${MSM_BASH_COMPLETION:-/etc/bash_completion.d/msm}"
+# Get the mc-rmm_CONF environment variable or use the default location
+CONF="${mc-rmm_CONF:-/etc/mc-rmm.conf}"
+# Get the mc-rmm_BASH_COMPLETION environment variable or use default location
+COMPLETION="${mc-rmm_BASH_COMPLETION:-/etc/bash_completion.d/mc-rmm}"
 follow_links "$COMPLETION"; COMPLETION="$RETURN"
 
 
@@ -109,20 +109,20 @@ COLOUR_RESET="\e[0m"
 
 # Creates a coloured warning line
 # $1 The warning to echo
-msm_warning() {
-	echoerr "${COLOUR_PURPLE}[MSM Warning: ${1}]${COLOUR_RESET}"
+mc-rmm_warning() {
+	echoerr "${COLOUR_PURPLE}[mc-rmm Warning: ${1}]${COLOUR_RESET}"
 }
 
-msm_error() {
-	echoerr "${COLOUR_RED}[MSM Error: ${1}]${COLOUR_RESET}"
+mc-rmm_error() {
+	echoerr "${COLOUR_RED}[mc-rmm Error: ${1}]${COLOUR_RESET}"
 }
 
-msm_info() {
-	echo -e "${COLOUR_CYAN}[MSM Info: ${1}]${COLOUR_RESET}"
+mc-rmm_info() {
+	echo -e "${COLOUR_CYAN}[mc-rmm Info: ${1}]${COLOUR_RESET}"
 }
 
-msm_success() {
-	echo -e "${COLOUR_CYAN}[MSM: ${1}]${COLOUR_RESET}"
+mc-rmm_success() {
+	echo -e "${COLOUR_CYAN}[mc-rmm: ${1}]${COLOUR_RESET}"
 }
 
 # Echoes the first non-empty string in the arguments list
@@ -646,9 +646,9 @@ server_ensure_jar() {
 server_read_config() {
 	unset RETURN
 	# Convert name into uppercase with underscores
-	# msm-setting => SERVER_SETTING
+	# mc-rmm-setting => SERVER_SETTING
 	# setting => SERVER_PROPERTIES_SETTING
-	if [[ "$2" =~ ^msm\-(.*)$ ]]; then
+	if [[ "$2" =~ ^mc-rmm\-(.*)$ ]]; then
 		to_global_name "${BASH_REMATCH[1]}"
 	else
 		to_global_name "PROPERTIES_$2"
@@ -1315,7 +1315,7 @@ server_create() {
 
 			as_user "$SETTINGS_USERNAME" "touch '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_SERVER_PROPERTIES'"
 			as_user "$SETTINGS_USERNAME" "mkdir -p '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_WORLD_STORAGE_PATH'"
-			as_user "$SETTINGS_USERNAME" "echo \"MSM requires all your worlds be moved into this directory.\" > '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_WORLD_STORAGE_PATH/readme.txt'"
+			as_user "$SETTINGS_USERNAME" "echo \"mc-rmm requires all your worlds be moved into this directory.\" > '$SETTINGS_SERVER_STORAGE_PATH/$1/$SETTINGS_DEFAULT_WORLD_STORAGE_PATH/readme.txt'"
 			echo "Done."
 
 			# Creates a server stub in memory, enough to use server_properties for.
@@ -1791,10 +1791,10 @@ server_property() {
 				if [[ "$version" == "unknown" ]]; then
 					# Use the latest Minecraft version if there is no explicit setting
 					if [[ -z "${VERSIONS_NEWEST_MINECRAFT_PATH}" ]]; then
-						msm_warning "No version set for server, and no default found. Please use 'msm update' to download defaults"
+						mc-rmm_warning "No version set for server, and no default found. Please use 'mc-rmm update' to download defaults"
 					else
 						if [[ ! "$arg" =~ logroll|config ]]; then
-							msm_info "Assuming 'minecraft/${VERSIONS_NEWEST_MINECRAFT_VERSION}' for this server. You should override this value by adding 'msm-version=minecraft/x.x.x' to '${SERVER_CONF[$1]}' to make this message go away"
+							mc-rmm_info "Assuming 'minecraft/${VERSIONS_NEWEST_MINECRAFT_VERSION}' for this server. You should override this value by adding 'mc-rmm-version=minecraft/x.x.x' to '${SERVER_CONF[$1]}' to make this message go away"
 						fi
 						SERVER_VERSION_CONF[$1]="${VERSIONS_NEWEST_MINECRAFT_PATH}"
 					fi
@@ -1864,7 +1864,7 @@ read_server_conf(){
 	if [[ "$name" =~ ^properties\-(.*)$ ]]; then
 		name="${BASH_REMATCH[1]}"
 	else
-		name="msm-$name"
+		name="mc-rmm-$name"
 	fi
 
 	local from_conf="$(sed -rn "s/^$name=('|\"|)(.*)\1/\2/ip" "${SERVER_CONF[$1]}" | tail -n 1)"
@@ -2142,7 +2142,7 @@ command_restart_now() {
 	command_start
 }
 
-# Displays the MSM version
+# Displays the mc-rmm version
 command_version() {
 	local version="$VERSION"
 
@@ -2150,10 +2150,10 @@ command_version() {
 		version="$version Beta"
 	fi
 
-	echo "Minecraft Server Manager $version"
+	echo "Minecraft Remote Monitoring and Managmen $version"
 }
 
-# Displays config values used by MSM
+# Displays config values used by mc-rmm
 command_config() {
 	for ((i=0; i<$SETTING_COUNT; i++)); do
 		manager_property "${SETTING_NAME[$i]}"
@@ -2163,7 +2163,7 @@ command_config() {
 	done
 }
 
-# Downloads latest versions of all MSM files
+# Downloads latest versions of all mc-rmm files
 command_update() {
 	echo -n "Checking for updates to version ${VERSION}..."
 
@@ -2179,7 +2179,7 @@ command_update() {
 	manager_property USERNAME
 
 	# Create the temp download directory
-	local output_dir="/tmp/msmupdate"
+	local output_dir="/tmp/mc-rmmupdate"
 
 	# Clean up the temp directory created for downloads
 	cleanup() {
@@ -2223,9 +2223,9 @@ command_update() {
 		fi
 	}
 
-	# Download the latest MSM script and check its version number
-	download_file "init/msm"
-	local latest_version="$(sed -rn "s/^VERSION=('|\"|)(.*)\1/\2/ip" "${output_dir}/init/msm" | tail -n 1)"
+	# Download the latest mc-rmm script and check its version number
+	download_file "init/mc-rmm"
+	local latest_version="$(sed -rn "s/^VERSION=('|\"|)(.*)\1/\2/ip" "${output_dir}/init/mc-rmm" | tail -n 1)"
 
 	# Download the other files if that version is different (implicitly better) to the current version
 	if [[ "$VERSION" == "$latest_version" ]]; then
@@ -2239,10 +2239,10 @@ command_update() {
 
 
 	echo -n "Checking if any files need to be updated..."
-	download_file "bash_completion/msm"
+	download_file "bash_completion/mc-rmm"
 	download_file "versioning/versions.txt"
 
-	# Downloads all versioning files in the latest MSM version
+	# Downloads all versioning files in the latest mc-rmm version
 	download_upstream_versions() {
 		manager_property VERSIONING_FILE_EXTENSION
 
@@ -2255,10 +2255,10 @@ command_update() {
 
 	# $returns: 0 if at least one file needs updating, 1 otherwise
 	files_need_updating() {
-		compare_file "bash_completion/msm" "$COMPLETION"
+		compare_file "bash_completion/mc-rmm" "$COMPLETION"
 		[ ! -z "$RETURN" ] && return 0
 
-		compare_file "init/msm" "$SCRIPT"
+		compare_file "init/mc-rmm" "$SCRIPT"
 		[ ! -z "$RETURN" ] && return 0
 
 		manager_property VERSIONING_STORAGE_PATH
@@ -2310,10 +2310,10 @@ command_update() {
 	if [[ "$updating" == "true" ]]; then
 		echo "Updating will overwrite the following files:"
 
-		compare_file "init/msm" "$SCRIPT"
-		[ ! -z "$RETURN" ] && echo "  > The main MSM script:        $SCRIPT"
+		compare_file "init/mc-rmm" "$SCRIPT"
+		[ ! -z "$RETURN" ] && echo "  > The main mc-rmm script:        $SCRIPT"
 
-		compare_file "bash_completion/msm" "$COMPLETION"
+		compare_file "bash_completion/mc-rmm" "$COMPLETION"
 		[ ! -z "$RETURN" ] && echo "  > The bash completion script: $COMPLETION"
 
 		manager_property VERSIONING_STORAGE_PATH
@@ -2334,7 +2334,7 @@ command_update() {
 	if [[ "$creating" == "true" ]]; then
 		echo "Updating will create the following files:"
 
-		[ ! -e "$SCRIPT" ] && echo "  > The main MSM script:        $SCRIPT"
+		[ ! -e "$SCRIPT" ] && echo "  > The main mc-rmm script:        $SCRIPT"
 		[ ! -e "$COMPLETION" ] && echo "  > The bash completion script: $COMPLETION"
 
 		manager_property VERSIONING_STORAGE_PATH
@@ -2361,11 +2361,11 @@ command_update() {
 	fi
 
 	if [[ "$answer" =~ ^(y|Y|yes)$ ]]; then
-		echo "Updating MSM to ${latest_version}:"
+		echo "Updating mc-rmm to ${latest_version}:"
 
 		# Overwrite bash completion file
 		local created="false"
-		compare_file "bash_completion/msm" "$COMPLETION"
+		compare_file "bash_completion/mc-rmm" "$COMPLETION"
 		if [ ! -z "$RETURN" ] || [ ! -e "$COMPLETION" ]; then
 			[ ! -e "$COMPLETION" ] && created="true"
 
@@ -2373,7 +2373,7 @@ command_update() {
 
 			local dir="$(dirname "$COMPLETION")"
 			as_user "root" "mkdir -p \"${dir}\""
-			as_user "root" "mv -f \"${output_dir}/bash_completion/msm\" \"$COMPLETION\""
+			as_user "root" "mv -f \"${output_dir}/bash_completion/mc-rmm\" \"$COMPLETION\""
 			source "$COMPLETION"
 
 			if "$created"; then
@@ -2383,9 +2383,9 @@ command_update() {
 			fi
 		fi
 
-		# Overwrite the MSM script itself
+		# Overwrite the mc-rmm script itself
 		created="false"
-		compare_file "init/msm" "$SCRIPT"
+		compare_file "init/mc-rmm" "$SCRIPT"
 		if [ ! -z "$RETURN" ] || [ ! -e "$SCRIPT" ]; then
 			[ ! -e "$SCRIPT" ] && created="true"
 
@@ -2393,7 +2393,7 @@ command_update() {
 
 			dir="$(dirname "$SCRIPT")"
 			as_user "root" "mkdir -p \"${dir}\""
-			as_user "root" "mv -f \"${output_dir}/init/msm\" \"$SCRIPT\""
+			as_user "root" "mv -f \"${output_dir}/init/mc-rmm\" \"$SCRIPT\""
 			as_user "root" "chmod +x \"$SCRIPT\""
 
 			if "$created"; then
@@ -2438,14 +2438,14 @@ command_update() {
 
 		echo "Done."
 	else
-		echo "MSM was not updated."
+		echo "mc-rmm was not updated."
 	fi
 
 	cleanup
 
 	# This script will now be replaced. So run the new script's
 	# update code, in case there are new things to update that
-	# this version of MSM does not know about yet.
+	# this version of mc-rmm does not know about yet.
 	if [[ "$any_files_updated" == "true" ]]; then
 		$0 update
 	fi
@@ -2575,9 +2575,9 @@ command_help() {
 	echo -e "  start                                         Starts all active servers"
 	echo -e "  stop [now]                                    Stops all running servers"
 	echo -e "  restart [now]                                 Restarts all active servers"
-	echo -e "  version                                       Prints the Minecraft Server Manager version installed"
-	echo -e "  config                                        Displays a list of the config values used by MSM"
-	echo -e "  update [--noinput]                            Replaces MSM files with the latest recommended versions"
+	echo -e "  version                                       Prints the Minecraft Remote Monitoring and Managmen version installed"
+	echo -e "  config                                        Displays a list of the config values used by mc-rmm"
+	echo -e "  update [--noinput]                            Replaces mc-rmm files with the latest recommended versions"
 }
 
 # Starts an individual server
@@ -3224,7 +3224,7 @@ command_server_config() {
 			server_property "$1" "${SERVER_SETTING_NAME[$i]}"
 
 			to_properties_name "${SERVER_SETTING_NAME[$i]}"
-			eval echo "msm-$RETURN=\\\"\${SERVER_${SERVER_SETTING_NAME[$i]}[$1]}\\\""
+			eval echo "mc-rmm-$RETURN=\\\"\${SERVER_${SERVER_SETTING_NAME[$i]}[$1]}\\\""
 		done
 	fi
 }
@@ -3241,7 +3241,7 @@ command_server_config() {
 ### Register Functions
 ### ------------------
 
-# Registers a setting that can be defined in /etc/msm.conf
+# Registers a setting that can be defined in /etc/mc-rmm.conf
 # $1: Setting name to register
 # $2: Optionally a default value for this setting
 register_setting() {
@@ -3270,35 +3270,35 @@ register_settings() {
 	register_setting DEBUG "false"
 
 	register_setting USERNAME "minecraft"
-	register_setting SERVER_STORAGE_PATH "/opt/msm/servers"
-	register_setting JAR_STORAGE_PATH "/opt/msm/jars"
-	register_setting VERSIONING_STORAGE_PATH "/opt/msm/versioning"
+	register_setting SERVER_STORAGE_PATH "/opt/mc-rmm/servers"
+	register_setting JAR_STORAGE_PATH "/opt/mc-rmm/jars"
+	register_setting VERSIONING_STORAGE_PATH "/opt/mc-rmm/versioning"
 	register_setting VERSIONING_FILE_EXTENSION "sh"
 	register_setting RAMDISK_STORAGE_ENABLED "true"
-	register_setting RAMDISK_STORAGE_PATH "/dev/shm/msm"
+	register_setting RAMDISK_STORAGE_PATH "/dev/shm/mc-rmm"
 
 	register_setting WORLD_ARCHIVE_ENABLED "true"
-	register_setting WORLD_RDIFF_PATH "/opt/msm/rdiff-backup/worlds"
+	register_setting WORLD_RDIFF_PATH "/opt/mc-rmm/rdiff-backup/worlds"
 	register_setting RDIFF_BACKUP_ENABLED "false"
 	register_setting RDIFF_BACKUP_NICE "19"
 	register_setting RDIFF_BACKUP_ROTATION "7"
 
 
-	register_setting UPDATE_URL "https://raw.githubusercontent.com/msmhq/msm/latest"
+	register_setting UPDATE_URL "https://raw.githubusercontent.com/mc-rmmhq/mc-rmm/latest"
 
-	register_setting WORLD_ARCHIVE_PATH "/opt/msm/archives/worlds"
-	register_setting LOG_ARCHIVE_PATH "/opt/msm/archives/logs"
-	register_setting BACKUP_ARCHIVE_PATH "/opt/msm/archives/backups"
+	register_setting WORLD_ARCHIVE_PATH "/opt/mc-rmm/archives/worlds"
+	register_setting LOG_ARCHIVE_PATH "/opt/mc-rmm/archives/logs"
+	register_setting BACKUP_ARCHIVE_PATH "/opt/mc-rmm/archives/backups"
 
 	register_setting RSYNC_BACKUP_ENABLED "false"
-	register_setting WORLD_RSYNC_PATH "/opt/msm/rsync/worlds"
+	register_setting WORLD_RSYNC_PATH "/opt/mc-rmm/rsync/worlds"
 
 	register_setting JARGROUP_TARGET "target.txt"
 	register_setting JARGROUP_DOWNLOAD_DIR "downloads"
 	register_setting SERVER_PROPERTIES "server.properties"
 
 	register_server_setting USERNAME "minecraft"
-	register_server_setting SCREEN_NAME "msm-{SERVER_NAME}"
+	register_server_setting SCREEN_NAME "mc-rmm-{SERVER_NAME}"
 	register_server_setting VERSION "unknown"
 
 	register_server_setting WORLD_STORAGE_PATH "worldstorage"
@@ -3549,7 +3549,7 @@ call_command() {
 
 						if [[ "$sid" -eq "-1" ]]; then
 							# Server id not set yet
-							error_exit 1 "Ill-defined command $*. Please file an issue by opening the following link: https://github.com/msmhq/msm/issues"
+							error_exit 1 "Ill-defined command $*. Please file an issue by opening the following link: https://github.com/mc-rmmhq/mc-rmm/issues"
 						fi
 
 						if [[ "$sid" -eq "-2" ]]; then
@@ -3646,7 +3646,7 @@ call_command() {
 	echo "No such command. See $0 help"
 }
 
-# Defines every MSM command.
+# Defines every mc-rmm command.
 register_commands() {
 	# The following section registers commands to be available for use. The
 	# register_command function accepts a command_signature and a
@@ -3878,13 +3878,13 @@ load_versions() {
 
 		# Record the latest minecraft version to use as a default
 		if [[ "$newest_minecraft_version" == "0.0.0" ]]; then
-			msm_warning "Could not find versioning files, please use 'msm update' to download them"
+			mc-rmm_warning "Could not find versioning files, please use 'mc-rmm update' to download them"
 		else
 			VERSIONS_NEWEST_MINECRAFT_VERSION="${newest_minecraft_version}"
 			VERSIONS_NEWEST_MINECRAFT_PATH="${SETTINGS_VERSIONING_STORAGE_PATH}/minecraft/${newest_minecraft_version}.${SETTINGS_VERSIONING_FILE_EXTENSION}"
 		fi
 	else
-		msm_warning "Could not find versioning files, please use 'msm update' to download them"
+		mc-rmm_warning "Could not find versioning files, please use 'mc-rmm update' to download them"
 	fi
 }
 
@@ -3920,7 +3920,7 @@ _newest_version() {
 	RETURN="$1"
 }
 
-# Checks available versions MSM supports and returns the
+# Checks available versions mc-rmm supports and returns the
 # closes match.
 # $1: Version name preferred
 # $RETURN: The closest available version, older or equal
@@ -4107,12 +4107,12 @@ main() {
 ### Start point
 
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-	# MSM was called from the command line
+	# mc-rmm was called from the command line
 
 	main "$@"
 	exit 0
 else
-	# MSM was sourced from another script.
+	# mc-rmm was sourced from another script.
 	# Just register settings instead.
 
 	register_settings
