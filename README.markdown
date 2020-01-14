@@ -1,11 +1,7 @@
-# Minecraft Server Manager [![Build Status][status-img]][status] [![Donate to MSM][donate-img]][donate]
+# Minecraft Remote Monitoring and Managment
 
-[status-img]: https://api.travis-ci.org/msmhq/msm.svg?branch=master
-[status]: http://travis-ci.org/msmhq/msm
-[donate-img]: https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif
-[donate]: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Z7XQDNF7U5GLL
 
-A single init script which makes running multiple Minecraft/Bukkit servers easier for us admins.
+A single init script which makes running multiple Minecraft servers easier for admins.
 
 ## Quick Installers
 
