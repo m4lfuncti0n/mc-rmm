@@ -1,4 +1,4 @@
-# MSM version file for Minecraft 1.7.0 and above
+# mc-rmm version file for Minecraft 1.7.0 and above
 
 extends "minecraft/1.3.0"
 
