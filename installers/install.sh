@@ -1,4 +1,4 @@
-BASE_URL="https://raw.githubusercontent.com/msmhq/msm/master/installers/"
+BASE_URL="https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/installers/"
 
 function check_os() {
     if [[ -f /etc/debian_version ]]; then
@@ -16,16 +16,16 @@ function check_os() {
 function get_installer() {
     type curl 1>/dev/null 2>&1
     if [[ $? -eq 0 ]]; then
-        curl -L "${BASE_URL}/${INSTALL_SCRIPT}" -o /tmp/msminst.sh
+        curl -L "${BASE_URL}/${INSTALL_SCRIPT}" -o /tmp/mc-rmm.inst.sh
     else
-        wget -q "${BASE_URL}/${INSTALL_SCRIPT}" -O /tmp/msminst.sh
+        wget -q "${BASE_URL}/${INSTALL_SCRIPT}" -O /tmp/mc-rmm.inst.sh
     fi
-    chmod u+x /tmp/msminst.sh
+    chmod u+x /tmp/mc-rmm.inst.sh
 }
 
 function do_install() {
-    if [[ -f /tmp/msminst.sh ]]; then
-        /tmp/msminst.sh && rm -f /tmp/msminst.sh
+    if [[ -f /tmp/mc-rmm.inst.sh ]]; then
+        /tmp/mc-rmm.inst.sh && rm -f /tmp/mc-rmm.inst.sh
     else
         echo "Error, failed to download install script."
         exit 1
