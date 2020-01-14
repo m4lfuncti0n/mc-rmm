@@ -1,8 +1,8 @@
 #!/bin/bash
 
-UPDATE_URL="https://raw.githubusercontent.com/msmhq/msm/master"
-wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/msmcommon.sh
-source /tmp/msmcommon.sh && rm -f /tmp/msmcommon.sh
+UPDATE_URL="https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master"
+wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/mc-rmm.common.sh
+source /tmp/mc-rmm.common.sh && rm -f /tmp/mc-rmm.common.sh
 
 function update_system_packages() {
     install_log "Updating sources"
@@ -25,10 +25,10 @@ function enable_init() {
     install_log "Enabling automatic startup and shutdown"
     hash insserv 2>/dev/null
     if [[ $? == 0 ]]; then
-        sudo insserv msm
+        sudo insserv mc-rmm
     else
-        sudo update-rc.d msm defaults 99 10
+        sudo update-rc.d mc-rmm defaults 99 10
     fi
 }
 
-install_msm
+install_mc-rmm
