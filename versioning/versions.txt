@@ -1,12 +1,8 @@
-# This file is a manifest of server versions MSM can handle.
-# MSM downloads this file to check which versions are available
+# This file is a manifest of server versions MC-RMM can handle.
+# MC-RMM downloads this file to check which versions are available
 # for download, each line points to a versioning file.
 
 # Vanilla Minecraft versions
 minecraft/1.2.0
 minecraft/1.3.0
 minecraft/1.7.0
-
-# CraftBukkit versions
-craftbukkit/1.2.0
-craftbukkit/1.3.0
