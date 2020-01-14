@@ -1,6 +1,6 @@
-UPDATE_URL="https://raw.githubusercontent.com/msmhq/msm/master"
-wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/msmcommon.sh
-source /tmp/msmcommon.sh && rm -f /tmp/msmcommon.sh
+UPDATE_URL="https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master"
+wget -q ${UPDATE_URL}/installers/common.sh -O /tmp/mc-rmm.common.sh
+source /tmp/mc-rmm.common.sh && rm -f /tmp/mc-rmm.common.sh
 
 function update_system_packages() {
     install_log "Updating sources"
@@ -14,7 +14,7 @@ function install_dependencies() {
 
 function enable_init() {
     install_log "Enabling automatic startup and shutdown"
-    sudo chkconfig --add msm
+    sudo chkconfig --add mc-rmm
 }
 
-install_msm
+install_mc-rmm
