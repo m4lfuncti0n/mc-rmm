@@ -1,10 +1,10 @@
 #!/bin/bash
 
 USERNAME="minecraft"
-DIR="${MSM_DIR:-$(pwd)}"
-DEFUALT_CONF="${MSM_DEFAULT_CONF:-${DIR}/msm.conf}"
-TESTS_DIR="${MSM_TESTS_DIR:-${DIR}/tests}"
-TMP_DIR="/tmp/msmtest"
+DIR="${mc-rmm_DIR:-$(pwd)}"
+DEFUALT_CONF="${mc-rmm_DEFAULT_CONF:-${DIR}/mc-rmm.conf}"
+TESTS_DIR="${mc-rmm_TESTS_DIR:-${DIR}/tests}"
+TMP_DIR="/tmp/mc-rmmtest"
 TEST_RAM="256"
 
 # Exit codes
@@ -22,33 +22,33 @@ EX_CONF_ERROR=73
 
 oneTimeSetUp() {
 	# Variables used in tests
-	TEST_SCRIPT="${MSM_TEST_SCRIPT:-${DIR}/init/msm}"
-	export MSM_CONF="${TMP_DIR}/msm.conf"	
+	TEST_SCRIPT="${mc-rmm_TEST_SCRIPT:-${DIR}/init/mc-rmm}"
+	export mc-rmm_CONF="${TMP_DIR}/mc-rmm.conf"	
 }
 
 
 setUp() {
 	# Create the testing conf from the default one
 	mkdir -p "$TMP_DIR" && chown "$USERNAME" "$TMP_DIR"
-	cp "$DEFUALT_CONF" "$MSM_CONF" && chown "$USERNAME" "$MSM_CONF"
+	cp "$DEFUALT_CONF" "$mc-rmm_CONF" && chown "$USERNAME" "$mc-rmm_CONF"
 
 	# Coppy versioning files
 	cp -r "${DIR}/versioning" "${TMP_DIR}/versioning"
 	
 	# Overwrite variables to use for testing purposes
-	echo "" >> "$MSM_CONF"
-	echo "# Auto appended by test script:" >> "$MSM_CONF"
-	echo "SERVER_STORAGE_PATH=\"${TMP_DIR}/servers\"" >> "$MSM_CONF"
-	echo "JAR_STORAGE_PATH=\"${TMP_DIR}/jars\"" >> "$MSM_CONF"
-	echo "RAMDISK_STORAGE_PATH=\"${TMP_DIR}/fakeramdisk\"" >> "$MSM_CONF"
-	echo "VERSIONING_STORAGE_PATH=\"${TMP_DIR}/versioning\"" >> "$MSM_CONF"
-	echo "WORLD_ARCHIVE_PATH=\"${TMP_DIR}/archives/worlds\"" >> "$MSM_CONF"
-	echo "LOG_ARCHIVE_PATH=\"${TMP_DIR}/archives/logs\"" >> "$MSM_CONF"
-	echo "BACKUP_ARCHIVE_PATH=\"${TMP_DIR}/archives/backups\"" >> "$MSM_CONF"
-	echo "DEBUG=\"true\"" >> "$MSM_CONF"
-	echo "DEFAULT_USERNAME=\"${USERNAME}\"" >> "$MSM_CONF"
-	echo "DEFAULT_SCREEN_NAME=\"msmtest-{SERVER_NAME}\"" >> "$MSM_CONF"
-	echo "DEFAULT_INVOCATION=\"java -Xmx${TEST_RAM}M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalPacing -XX:+AggressiveOpts -jar {JAR} nogui\"" >> "$MSM_CONF"
+	echo "" >> "$mc-rmm_CONF"
+	echo "# Auto appended by test script:" >> "$mc-rmm_CONF"
+	echo "SERVER_STORAGE_PATH=\"${TMP_DIR}/servers\"" >> "$mc-rmm_CONF"
+	echo "JAR_STORAGE_PATH=\"${TMP_DIR}/jars\"" >> "$mc-rmm_CONF"
+	echo "RAMDISK_STORAGE_PATH=\"${TMP_DIR}/fakeramdisk\"" >> "$mc-rmm_CONF"
+	echo "VERSIONING_STORAGE_PATH=\"${TMP_DIR}/versioning\"" >> "$mc-rmm_CONF"
+	echo "WORLD_ARCHIVE_PATH=\"${TMP_DIR}/archives/worlds\"" >> "$mc-rmm_CONF"
+	echo "LOG_ARCHIVE_PATH=\"${TMP_DIR}/archives/logs\"" >> "$mc-rmm_CONF"
+	echo "BACKUP_ARCHIVE_PATH=\"${TMP_DIR}/archives/backups\"" >> "$mc-rmm_CONF"
+	echo "DEBUG=\"true\"" >> "$mc-rmm_CONF"
+	echo "DEFAULT_USERNAME=\"${USERNAME}\"" >> "$mc-rmm_CONF"
+	echo "DEFAULT_SCREEN_NAME=\"mc-rmmtest-{SERVER_NAME}\"" >> "$mc-rmm_CONF"
+	echo "DEFAULT_INVOCATION=\"java -Xmx${TEST_RAM}M -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalPacing -XX:+AggressiveOpts -jar {JAR} nogui\"" >> "$mc-rmm_CONF"
 
 	source $TEST_SCRIPT
 	
@@ -123,27 +123,27 @@ quiet() {
 # Global Command Tests
 # -----------------------
 
-### "msm start" tests
+### "mc-rmm start" tests
 
-### "msm stop" tests
+### "mc-rmm stop" tests
 
-### "msm restart" tests
+### "mc-rmm restart" tests
 
-### "msm version" tests
+### "mc-rmm version" tests
 
 
 
 # Server Management Tests
 # -----------------------
 
-### "msm server list" tests
+### "mc-rmm server list" tests
 
 test_listing_no_servers() {
 	expect_stderr_empty $TEST_SCRIPT server list
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm server create" tests
+### "mc-rmm server create" tests
 
 test_reserved_server_names() {
 	manager_property SERVER_STORAGE_PATH
@@ -209,7 +209,7 @@ test_creating_server_with_jar_groups() {
 	assertTrue "Server jar (${SERVER_JAR_PATH[$sid]}) was not linked." "[ -f \"${SERVER_JAR_PATH[$sid]}\" ]"
 }
 
-### "msm server delete" tests
+### "mc-rmm server delete" tests
 
 test_deleting_server_that_does_not_exist() {
 	expect_stderr $TEST_SCRIPT server delete example
@@ -225,7 +225,7 @@ test_deleting_server_that_exists_and_is_stopped() {
 	assertFalse "Server directory was not removed." "[ -d \"$SERVER_STORAGE_PATH/example\" ]"
 }
 
-### "msm server rename" tests
+### "mc-rmm server rename" tests
 
 test_renaming_server_that_does_not_exist() {
 	expect_stderr $TEST_SCRIPT server rename example example_new_name
@@ -248,7 +248,7 @@ test_renaming_server_that_exists_and_is_stopped() {
 # Stopped Server Tests
 # --------------------
 
-### "msm <server> stop" tests
+### "mc-rmm <server> stop" tests
 
 test_stopped_server_stop() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -256,7 +256,7 @@ test_stopped_server_stop() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> status" tests
+### "mc-rmm <server> status" tests
 
 test_stopped_server_status() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -264,7 +264,7 @@ test_stopped_server_status() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> connected" tests
+### "mc-rmm <server> connected" tests
 
 test_stopped_server_connected() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -272,7 +272,7 @@ test_stopped_server_connected() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> worlds list" tests
+### "mc-rmm <server> worlds list" tests
 
 test_stopped_server_worlds_list_none() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -280,7 +280,7 @@ test_stopped_server_worlds_list_none() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> worlds load" tests
+### "mc-rmm <server> worlds load" tests
 
 test_stopped_server_worlds_load_none() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -288,7 +288,7 @@ test_stopped_server_worlds_load_none() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> worlds ram" tests
+### "mc-rmm <server> worlds ram" tests
 
 test_stopped_server_worlds_ram_name_not_found() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -296,7 +296,7 @@ test_stopped_server_worlds_ram_name_not_found() {
 	assertEquals "Incorrect exit code." $EX_NAME_NOT_FOUND $EXIT_CODE
 }
 
-### "msm <server> worlds todisk" tests
+### "mc-rmm <server> worlds todisk" tests
 
 test_stopped_server_worlds_todisk_none() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -304,7 +304,7 @@ test_stopped_server_worlds_todisk_none() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> worlds backup" tests
+### "mc-rmm <server> worlds backup" tests
 
 test_stopped_server_worlds_todisk_none() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -312,11 +312,11 @@ test_stopped_server_worlds_todisk_none() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> worlds on" tests
+### "mc-rmm <server> worlds on" tests
 
-### "msm <server> worlds off" tests
+### "mc-rmm <server> worlds off" tests
 
-### "msm <server> logroll" tests
+### "mc-rmm <server> logroll" tests
 
 test_stopped_server_logroll_empty() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -324,7 +324,7 @@ test_stopped_server_logroll_empty() {
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm <server> backup" tests
+### "mc-rmm <server> backup" tests
 
 test_stopped_server_backup() {
 	manager_property BACKUP_ARCHIVE_PATH
@@ -335,7 +335,7 @@ test_stopped_server_backup() {
 	assertNotNull "Server backup was not created." "find '$SETTINGS_BACKUP_ARCHIVE_PATH/stoppedserver' -mindepth 1 -maxdepth 1 -type f -name '*.zip'"
 }
 
-### "msm <server> jar" tests
+### "mc-rmm <server> jar" tests
 
 test_stopped_server_jar() {
 	quiet $TEST_SCRIPT server create stoppedserver
@@ -360,148 +360,148 @@ test_stopped_server_jar() {
 	assertTrue "Server jar (${SERVER_JAR_PATH[$sid]}) was not linked." "[ -f \"${SERVER_JAR_PATH[$sid]}\" ]"
 }
 
-### "msm <server> whitelist on" tests
+### "mc-rmm <server> whitelist on" tests
 
-### "msm <server> whitelist off" tests
+### "mc-rmm <server> whitelist off" tests
 
-### "msm <server> whitelist add" tests
+### "mc-rmm <server> whitelist add" tests
 
-### "msm <server> whitelist remove" tests
+### "mc-rmm <server> whitelist remove" tests
 
-### "msm <server> whitelist list" tests
+### "mc-rmm <server> whitelist list" tests
 
-### "msm <server> blacklist player add" tests
+### "mc-rmm <server> blacklist player add" tests
 
-### "msm <server> blacklist player remove" tests
+### "mc-rmm <server> blacklist player remove" tests
 
-### "msm <server> blacklist ip add" tests
+### "mc-rmm <server> blacklist ip add" tests
 
-### "msm <server> blacklist ip remove" tests
+### "mc-rmm <server> blacklist ip remove" tests
 
-### "msm <server> blacklist list" tests
+### "mc-rmm <server> blacklist list" tests
 
-### "msm <server> operator add" tests
+### "mc-rmm <server> operator add" tests
 
-### "msm <server> operator remove" tests
+### "mc-rmm <server> operator remove" tests
 
-### "msm <server> operator list" tests
+### "mc-rmm <server> operator list" tests
 
-### "msm <server> gamemode" tests
+### "mc-rmm <server> gamemode" tests
 
-### "msm <server> kick" tests
+### "mc-rmm <server> kick" tests
 
-### "msm <server> say" tests
+### "mc-rmm <server> say" tests
 
-### "msm <server> time set" tests
+### "mc-rmm <server> time set" tests
 
-### "msm <server> time add" tests
+### "mc-rmm <server> time add" tests
 
-### "msm <server> toggledownfall" tests
+### "mc-rmm <server> toggledownfall" tests
 
-### "msm <server> save on" tests
+### "mc-rmm <server> save on" tests
 
-### "msm <server> save off" tests
+### "mc-rmm <server> save off" tests
 
-### "msm <server> save all" tests
+### "mc-rmm <server> save all" tests
 
-### "msm <server> cmd" tests
+### "mc-rmm <server> cmd" tests
 
-### "msm <server> cmdlog" tests
+### "mc-rmm <server> cmdlog" tests
 
-### "msm <server> console" tests
+### "mc-rmm <server> console" tests
 
 
 
 # Individual Server Tests
 # -----------------------
 
-### "msm <server> start" tests
+### "mc-rmm <server> start" tests
 
-### "msm <server> stop" tests
+### "mc-rmm <server> stop" tests
 
-### "msm <server> restart" tests
+### "mc-rmm <server> restart" tests
 
-### "msm <server> status" tests
+### "mc-rmm <server> status" tests
 
-### "msm <server> connected" tests
+### "mc-rmm <server> connected" tests
 
-### "msm <server> worlds list" tests
+### "mc-rmm <server> worlds list" tests
 
-### "msm <server> worlds load" tests
+### "mc-rmm <server> worlds load" tests
 
-### "msm <server> worlds ram" tests
+### "mc-rmm <server> worlds ram" tests
 
-### "msm <server> worlds todisk" tests
+### "mc-rmm <server> worlds todisk" tests
 
-### "msm <server> worlds backup" tests
+### "mc-rmm <server> worlds backup" tests
 
-### "msm <server> worlds on" tests
+### "mc-rmm <server> worlds on" tests
 
-### "msm <server> worlds off" tests
+### "mc-rmm <server> worlds off" tests
 
-### "msm <server> worlds off" tests
+### "mc-rmm <server> worlds off" tests
 
-### "msm <server> logroll" tests
+### "mc-rmm <server> logroll" tests
 
-### "msm <server> backup" tests
+### "mc-rmm <server> backup" tests
 
-### "msm <server> jar" tests
+### "mc-rmm <server> jar" tests
 
-### "msm <server> whitelist on" tests
+### "mc-rmm <server> whitelist on" tests
 
-### "msm <server> whitelist off" tests
+### "mc-rmm <server> whitelist off" tests
 
-### "msm <server> whitelist add" tests
+### "mc-rmm <server> whitelist add" tests
 
-### "msm <server> whitelist remove" tests
+### "mc-rmm <server> whitelist remove" tests
 
-### "msm <server> whitelist list" tests
+### "mc-rmm <server> whitelist list" tests
 
-### "msm <server> blacklist player add" tests
+### "mc-rmm <server> blacklist player add" tests
 
-### "msm <server> blacklist player remove" tests
+### "mc-rmm <server> blacklist player remove" tests
 
-### "msm <server> blacklist ip add" tests
+### "mc-rmm <server> blacklist ip add" tests
 
-### "msm <server> blacklist ip remove" tests
+### "mc-rmm <server> blacklist ip remove" tests
 
-### "msm <server> blacklist list" tests
+### "mc-rmm <server> blacklist list" tests
 
-### "msm <server> operator add" tests
+### "mc-rmm <server> operator add" tests
 
-### "msm <server> operator remove" tests
+### "mc-rmm <server> operator remove" tests
 
-### "msm <server> operator list" tests
+### "mc-rmm <server> operator list" tests
 
-### "msm <server> gamemode" tests
+### "mc-rmm <server> gamemode" tests
 
-### "msm <server> kick" tests
+### "mc-rmm <server> kick" tests
 
-### "msm <server> say" tests
+### "mc-rmm <server> say" tests
 
-### "msm <server> time set" tests
+### "mc-rmm <server> time set" tests
 
-### "msm <server> time add" tests
+### "mc-rmm <server> time add" tests
 
-### "msm <server> toggledownfall" tests
+### "mc-rmm <server> toggledownfall" tests
 
-### "msm <server> save on" tests
+### "mc-rmm <server> save on" tests
 
-### "msm <server> save off" tests
+### "mc-rmm <server> save off" tests
 
-### "msm <server> save all" tests
+### "mc-rmm <server> save all" tests
 
-### "msm <server> cmd" tests
+### "mc-rmm <server> cmd" tests
 
-### "msm <server> cmdlog" tests
+### "mc-rmm <server> cmdlog" tests
 
-### "msm <server> console" tests
+### "mc-rmm <server> console" tests
 
 
 # Jargroup Tests
 # --------------
 
-### "msm jargroup create" test
+### "mc-rmm jargroup create" test
 
 test_reserved_jargroup_names() {
 	for name in "start" "stop" "restart" "server" "version" "jargroup" "all"; do
@@ -538,7 +538,7 @@ test_creating_jargroup_when_that_name_already_exists() {
 	assertEquals "Incorrect exit code." $EX_DUPLICATE_NAME $EXIT_CODE
 }
 
-### "msm jargroup list" test
+### "mc-rmm jargroup list" test
 
 test_listing_no_jargroups() {
 	expect_stderr_empty $TEST_SCRIPT jargroup list
@@ -555,18 +555,17 @@ test_listing_one_jargroup() {
 # Assumes: test_creating_jargroup
 test_listing_multiple_jargroups() {
 	quiet $TEST_SCRIPT jargroup create minecraft https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar
-	quiet $TEST_SCRIPT jargroup create craftbukkit http://dl.bukkit.org/latest-rb/craftbukkit.jar
 	expect_stderr_empty $TEST_SCRIPT jargroup list
 	assertEquals "Incorrect exit code." $EX_OK $EXIT_CODE
 }
 
-### "msm jargroup delete" test
+### "mc-rmm jargroup delete" test
 
-### "msm jargroup rename" test
+### "mc-rmm jargroup rename" test
 
-### "msm jargroup changetarget" test
+### "mc-rmm jargroup changetarget" test
 
-### "msm jargroup getlatest" test
+### "mc-rmm jargroup getlatest" test
 
 
 # Perform tests
