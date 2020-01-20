@@ -1,6 +1,6 @@
-mc-rmm_dir="/opt/mc-rmm"
-mc-rmm_user="minecraft"
-mc-rmm_user_system=false
+mcrmm_dir="/opt/mc-rmm"
+mcrmm_user="minecraft"
+mcrmm_user_system=false
 dl_dir="$(mktemp -d -t mc-rmm-XXX)"
 
 # Outputs an mc-rmm INSTALL log line
@@ -19,22 +19,22 @@ function install_error() {
 
 function config_installation() {
     install_log "Configure installation"
-    echo -n "Install directory [${mc-rmm_dir}]: "
+    echo -n "Install directory [${mcrmm_dir}]: "
     read input
     if [ ! -z "$input" ]; then
-        mc-rmm_dir="$input"
+        mcrmm_dir="$input"
     fi
 
-    echo -n "New server user to be created [${mc-rmm_user}]: "
+    echo -n "New server user to be created [${mcrmm_user}]: "
     read input
     if [ ! -z "$input" ]; then
-        mc-rmm_user="$input"
+        mcrmm_user="$input"
     fi
 
     echo -n "Add new user as system account? [y/N]: "
     read answer
     if [[ $answer != "y" ]]; then
-        mc-rmm_user_system=true
+        mcrmm_user_system=true
     fi
 
     echo -n "Complete installation with these values? [y/N]: "
@@ -59,21 +59,21 @@ function install_dependencies() {
 
 # Verifies existence of or adds user for Minecraft server (default "minecraft")
 function add_minecraft_user() {
-    install_log "Creating default user '${mc-rmm_user}'"
-    if $mc-rmm_user_system; then
-        sudo useradd ${mc-rmm_user} --home "$mc-rmm_dir"
+    install_log "Creating default user '${mcrmm_user}'"
+    if $mcrmm_user_system; then
+        sudo useradd ${mcrmm_user} --home "$mcrmm_dir"
     else
-        sudo useradd ${mc-rmm_user} --system --home "$mc-rmm_dir"
+        sudo useradd ${mcrmm_user} --system --home "$mcrmm_dir"
     fi
 }
 
 # Verifies existence and permissions of mc-rmm server directory (default /opt/mc-rmm)
-function create_mc-rmm_directories() {
+function create_mcrmm_directories() {
     install_log "Creating mc-rmm directories"
-    if [ ! -d "$mc-rmm_dir" ]; then
-        sudo mkdir -p "$mc-rmm_dir" || install_error "Couldn't create directory '$mc-rmm_dir'"
+    if [ ! -d "$mcrmm_dir" ]; then
+        sudo mkdir -p "$mcrmm_dir" || install_error "Couldn't create directory '$mcrmm_dir'"
     fi
-    sudo chown -R $mc-rmm_user:$mc-rmm_user "$mc-rmm_dir" || install_error "Couldn't change file ownership for '$mc-rmm_dir'"
+    sudo chown -R $mcrmm_user:$mcrmm_user "$mcrmm_dir" || install_error "Couldn't change file ownership for '$mcrmm_dir'"
 }
 
 # Fetches latest mc-rmm.conf, cron job, and init script
@@ -99,13 +99,13 @@ function download_latest_files() {
 function patch_latest_files() {
     # patch config file
     install_log "Patching mc-rmm configuration file"
-    sudo sed 's#USERNAME="minecraft"#USERNAME="'$mc-rmm_user'"#g' "$dl_dir/mc-rmm.conf.orig" | \
-        sed "s#/opt/mc-rmm#$mc-rmm_dir#g" | \
+    sudo sed 's#USERNAME="minecraft"#USERNAME="'$mcrmm_user'"#g' "$dl_dir/mc-rmm.conf.orig" | \
+        sed "s#/opt/mc-rmm#$mcrmm_dir#g" | \
         sed "s#UPDATE_URL=.*\$#UPDATE_URL=\"$UPDATE_URL\"#" >"$dl_dir/mc-rmm.conf"
 
     # patch cron file
     install_log "Patching mc-rmm cron file"
-    sudo awk '{ if ($0 !~ /^#/) sub(/minecraft/, "'$mc-rmm_user'"); print }' \
+    sudo awk '{ if ($0 !~ /^#/) sub(/minecraft/, "'$mcrmm_user'"); print }' \
         "$dl_dir/mc-rmm.cron.orig" >"$dl_dir/mc-rmm.cron"
 
     # patch init file
@@ -165,7 +165,7 @@ function install_mc-rmm() {
     add_minecraft_user
     update_system_packages
     install_dependencies
-    create_mc-rmm_directories
+    create_mcrmm_directories
     download_latest_files
     patch_latest_files
     install_config
