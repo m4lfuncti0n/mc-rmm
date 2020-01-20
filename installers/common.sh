@@ -39,7 +39,8 @@ function config_installation() {
 
     echo -n "Complete installation with these values? [y/N]: "
     read answer
-    if [[ $answer != ^([yY])$]]; then
+    answer=${answer,,}    # tolower
+    if [[ $answer = "y"]]; then
         echo "Installation aborted."
         exit 0
     fi
