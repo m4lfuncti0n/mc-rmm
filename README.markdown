@@ -5,11 +5,11 @@ A single init script which makes running multiple Minecraft servers easier for a
 
 ## Quick Installers
 
-Install MSM on a **debian box**:
+Install MC-RMM on a **debian box**:
 
     wget -q https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/installers/debian.sh -O /tmp/mc-rmm && bash /tmp/mc-rmm
 
-Or install MSM under **RedHat**:
+Or install MC-RMM under **RedHat**:
 
 	wget -q https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/installers/redhat.sh -O /tmp/mc-rmm && bash /tmp/mc-rmm
 
@@ -17,17 +17,17 @@ Or [suggest a new platform][issues].
 
 ## Getting Started
 
-* [Install][install] MSM on your box.
+* [Install][install] MC-RMM on your box.
 * [Visit the docs][docs] for help with getting started.
 * Fork and contribute your own modifications.
-* Not a coder? [Post an issue][issues] with your idea for MSM instead.
-* Read the [changelog][changelog] to get a picture of how MSM has evolved over time.
+* Not a coder? [Post an issue][issues] with your idea for MC-RMM instead.
+* Read the [changelog][changelog] to get a picture of how MC-RMM has evolved over time.
 
-MSM is released under the GPLv3 licence, which is included in the repository [here][licence]. I'm open to suggestions where licencing is concerned.
+MC-RMM is released under the GPLv3 licence, which is included in the repository [here][licence]. I'm open to suggestions where licencing is concerned.
 
 ## Features
 
-As well as starting, stopping and restarting MSM has the following features:
+As well as starting, stopping and restarting MC-RMM has the following features:
 
 * One script handles multiple servers, run two or more servers on one machine.
 * Can create and start new servers with a single command, downloads the jars for you.
@@ -44,7 +44,7 @@ As well as starting, stopping and restarting MSM has the following features:
 
 ## Support
 
-1. If you find a problem with MSM and you think the problem is one that requires changing code [submit an issue][issues] via GitHub.
+1. If you find a problem with MC-RMM and you think the problem is one that requires changing code [submit an issue][issues] via GitHub.
 
 ## Upcoming features
 
@@ -54,7 +54,7 @@ As well as starting, stopping and restarting MSM has the following features:
 
 ## Versioning
 
-MSM uses semantic version numbers to better describe what code one might have installed, and indicate backwards incompatible changes.
+MC-RMM uses semantic version numbers to better describe what code one might have installed, and indicate backwards incompatible changes.
 
 Releases will be numbered in the following format:
 
@@ -75,8 +75,8 @@ This code grew out of an old version of [Ahtenus' Minecraft Init Script][ahtenus
 
 [we-snapshot]: http://wiki.sk89q.com/wiki/WorldEdit/Snapshots
 [ahtenus-minecraft-init]: https://github.com/Ahtenus/minecraft-init
-[docs]: http://msmhq.com/docs/
-[install]: http://msmhq.com/docs/installation.html
-[changelog]: https://github.com/msmhq/msm/blob/master/CHANGELOG.markdown
-[licence]: https://github.com/msmhq/msm/blob/master/LICENSE.markdown
-[issues]: https://github.com/msmhq/msm/issues
+[docs]: http://MC-RMMhq.com/docs/
+[install]: http://MC-RMMhq.com/docs/installation.html
+[changelog]: https://github.com/MC-RMMhq/MC-RMM/blob/master/CHANGELOG.markdown
+[licence]: https://github.com/MC-RMMhq/MC-RMM/blob/master/LICENSE.markdown
+[issues]: https://github.com/MC-RMMhq/MC-RMM/issues
