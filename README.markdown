@@ -7,11 +7,11 @@ A single init script which makes running multiple Minecraft servers easier for a
 
 Install MSM on a **debian box**:
 
-    wget -q http://git.io/Sxpr9g -O /tmp/msm && bash /tmp/msm
+    wget -q https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/installers/debian.sh -O /tmp/mc-rmm && bash /tmp/mc-rmm
 
 Or install MSM under **RedHat**:
 
-	wget -q http://git.io/lu0ULA -O /tmp/msm && bash /tmp/msm
+	wget -q https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/installers/redhat.sh -O /tmp/mc-rmm && bash /tmp/mc-rmm
 
 Or [suggest a new platform][issues].
 
