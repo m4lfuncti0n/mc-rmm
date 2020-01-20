@@ -17,10 +17,7 @@ Or [suggest a new platform][issues].
 
 ## Getting Started
 
-* [Install][install] MC-RMM on your box.
-* [Visit the docs][docs] for help with getting started.
-* Fork and contribute your own modifications.
-* Not a coder? [Post an issue][issues] with your idea for MC-RMM instead.
+* Install MC-RMM on your box.
 * Read the [changelog][changelog] to get a picture of how MC-RMM has evolved over time.
 
 MC-RMM is released under the GPLv3 licence, which is included in the repository [here][licence]. I'm open to suggestions where licencing is concerned.
@@ -31,7 +28,7 @@ As well as starting, stopping and restarting MC-RMM has the following features:
 
 * One script handles multiple servers, run two or more servers on one machine.
 * Can create and start new servers with a single command, downloads the jars for you.
-* Periodically makes [WorldEdit snapshot][we-snapshot] compatible backups of your worlds.
+* Periodically makes backups of your worlds.
 * Backup the entire server directory for complete protection.
 * Load world's into RAM for faster access (reduces lag).
 * Easily configurable global defaults, with per server overrides if needed.
@@ -73,10 +70,8 @@ For more information on SemVer, visit http://semver.org/.
 
 This code grew out of an old version of [Ahtenus' Minecraft Init Script][ahtenus-minecraft-init].
 
-[we-snapshot]: http://wiki.sk89q.com/wiki/WorldEdit/Snapshots
+
 [ahtenus-minecraft-init]: https://github.com/Ahtenus/minecraft-init
-[docs]: http://MC-RMMhq.com/docs/
-[install]: http://MC-RMMhq.com/docs/installation.html
-[changelog]: https://github.com/MC-RMMhq/MC-RMM/blob/master/CHANGELOG.markdown
-[licence]: https://github.com/MC-RMMhq/MC-RMM/blob/master/LICENSE.markdown
-[issues]: https://github.com/MC-RMMhq/MC-RMM/issues
+[changelog]: https://github.com/m4lfiuncti0n/mc-rmm/blob/master/CHANGELOG.markdown
+[licence]: https://github.com/m4lfiuncti0n/mc-rmm/blob/master/LICENSE.markdown
+[issues]: https://github.com/m4lfiuncti0n/mc-rmm/issues
