@@ -74,4 +74,4 @@ This code grew out of an old version of [Ahtenus' Minecraft Init Script][ahtenus
 [ahtenus-minecraft-init]: https://github.com/Ahtenus/minecraft-init
 [changelog]: https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/CHANGELOG.markdown
 [licence]: https://raw.githubusercontent.com/m4lfuncti0n/mc-rmm/master/LICENSE.markdown
-[issues]: https://github.com/m4lfiuncti0n/mc-rmm/issues
+[issues]: https://github.com/m4lfuncti0n/mc-rmm/issues
