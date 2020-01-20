@@ -33,14 +33,15 @@ function config_installation() {
 
     echo -n "Add new user as system account? [y/N]: "
     read answer
+    answer=${answer,,}
     if [[ $answer != "y" ]]; then
         mcrmm_user_system=true
     fi
 
     echo -n "Complete installation with these values? [y/N]: "
     read answer
-    answer=${answer,,}    # tolower
-    if [[ $answer = "y"]]; then
+    answer=${answer,,}
+    if [[ $answer != "y" ]]; then
         echo "Installation aborted."
         exit 0
     fi
