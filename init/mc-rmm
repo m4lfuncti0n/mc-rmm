@@ -47,10 +47,10 @@ follow_links() {
 
 # Get real script file location
 follow_links "$0"; SCRIPT="$RETURN"
-# Get the mc-rmm_CONF environment variable or use the default location
-CONF="${mc-rmm_CONF:-/etc/mc-rmm.conf}"
-# Get the mc-rmm_BASH_COMPLETION environment variable or use default location
-COMPLETION="${mc-rmm_BASH_COMPLETION:-/etc/bash_completion.d/mc-rmm}"
+# Get the mcrmm_CONF environment variable or use the default location
+CONF="${mcrmm_CONF:-/etc/mc-rmm.conf}"
+# Get the mcrmm_BASH_COMPLETION environment variable or use default location
+COMPLETION="${mcrmm_BASH_COMPLETION:-/etc/bash_completion.d/mc-rmm}"
 follow_links "$COMPLETION"; COMPLETION="$RETURN"
 
 
@@ -109,19 +109,19 @@ COLOUR_RESET="\e[0m"
 
 # Creates a coloured warning line
 # $1 The warning to echo
-mc-rmm_warning() {
+mcrmm_warning() {
 	echoerr "${COLOUR_PURPLE}[mc-rmm Warning: ${1}]${COLOUR_RESET}"
 }
 
-mc-rmm_error() {
+mcrmm_error() {
 	echoerr "${COLOUR_RED}[mc-rmm Error: ${1}]${COLOUR_RESET}"
 }
 
-mc-rmm_info() {
+mcrmm_info() {
 	echo -e "${COLOUR_CYAN}[mc-rmm Info: ${1}]${COLOUR_RESET}"
 }
 
-mc-rmm_success() {
+mcrmm_success() {
 	echo -e "${COLOUR_CYAN}[mc-rmm: ${1}]${COLOUR_RESET}"
 }
 
@@ -1791,10 +1791,10 @@ server_property() {
 				if [[ "$version" == "unknown" ]]; then
 					# Use the latest Minecraft version if there is no explicit setting
 					if [[ -z "${VERSIONS_NEWEST_MINECRAFT_PATH}" ]]; then
-						mc-rmm_warning "No version set for server, and no default found. Please use 'mc-rmm update' to download defaults"
+						mcrmm_warning "No version set for server, and no default found. Please use 'mc-rmm update' to download defaults"
 					else
 						if [[ ! "$arg" =~ logroll|config ]]; then
-							mc-rmm_info "Assuming 'minecraft/${VERSIONS_NEWEST_MINECRAFT_VERSION}' for this server. You should override this value by adding 'mc-rmm-version=minecraft/x.x.x' to '${SERVER_CONF[$1]}' to make this message go away"
+							mcrmm_info "Assuming 'minecraft/${VERSIONS_NEWEST_MINECRAFT_VERSION}' for this server. You should override this value by adding 'mc-rmm-version=minecraft/x.x.x' to '${SERVER_CONF[$1]}' to make this message go away"
 						fi
 						SERVER_VERSION_CONF[$1]="${VERSIONS_NEWEST_MINECRAFT_PATH}"
 					fi
@@ -3878,13 +3878,13 @@ load_versions() {
 
 		# Record the latest minecraft version to use as a default
 		if [[ "$newest_minecraft_version" == "0.0.0" ]]; then
-			mc-rmm_warning "Could not find versioning files, please use 'mc-rmm update' to download them"
+			mcrmm_warning "Could not find versioning files, please use 'mc-rmm update' to download them"
 		else
 			VERSIONS_NEWEST_MINECRAFT_VERSION="${newest_minecraft_version}"
 			VERSIONS_NEWEST_MINECRAFT_PATH="${SETTINGS_VERSIONING_STORAGE_PATH}/minecraft/${newest_minecraft_version}.${SETTINGS_VERSIONING_FILE_EXTENSION}"
 		fi
 	else
-		mc-rmm_warning "Could not find versioning files, please use 'mc-rmm update' to download them"
+		mcrmm_warning "Could not find versioning files, please use 'mc-rmm update' to download them"
 	fi
 }
 
