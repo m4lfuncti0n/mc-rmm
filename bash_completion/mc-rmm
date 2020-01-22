@@ -13,13 +13,13 @@ if [ -f "/etc/profile.d/mc-rmm.sh" ]; then
 	source "/etc/profile.d/mc-rmm.sh"
 fi
 
-mc-rmm="${mc-rmmSCRIPT:-/etc/init.d/mc-rmm}"
+mcrmm="${mcrmm_SCRIPT:-/etc/init.d/mc-rmm}"
 
 
 ### Auto Completion Function
 
-_mc-rmm() {
-	source "$mc-rmm"
+_mcrmm() {
+	source "$mcrmm"
 	
 	local base current options
 	COMPREPLY=()
@@ -251,4 +251,4 @@ _mc-rmm() {
 	return 0
 }
 
-complete -F _mc-rmm mc-rmm
+complete -F _mcrmm mcrmm
