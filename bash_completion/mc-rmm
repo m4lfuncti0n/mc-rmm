@@ -13,7 +13,7 @@ if [ -f "/etc/profile.d/mc-rmm.sh" ]; then
 	source "/etc/profile.d/mc-rmm.sh"
 fi
 
-mc-rmm="${mc-rmm_SCRIPT:-/etc/init.d/mc-rmm}"
+mc-rmm="${mc-rmmSCRIPT:-/etc/init.d/mc-rmm}"
 
 
 ### Auto Completion Function
